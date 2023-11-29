@@ -1,0 +1,31 @@
+.all-invoice {
+    display: flex;
+    direction: colomn;
+}
+
+.invoice-part-container {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    grid-template-rows: 1fr;
+}
+
+.locked {
+
+    ::ng-deep {
+
+        app-invoice,
+        app-invoice-action-content,
+        .lockable {
+            @apply grayscale pointer-events-none;
+        }
+
+    }
+
+}
+h2 {
+    margin-bottom:0;
+}
+.saveChanges{
+    background-color: darkorange;
+    color: white;
+}

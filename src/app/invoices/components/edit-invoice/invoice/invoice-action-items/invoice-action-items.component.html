@@ -1,0 +1,76 @@
+<div class="flex mb-5">
+    <mat-slide-toggle color="primary" [(ngModel)]="vatIncluded" (change)="onVatChange()"></mat-slide-toggle>
+    <label class="block ml-4">{{ vatIncluded ? 'כולל מע"מ' : 'לא כולל מע"מ' }}</label>
+</div>
+<table mat-table [dataSource]="editableItems" class="mat-elevation-z8 w-full tbl-items">
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- actions Column -->
+    <ng-container matColumnDef="actions">
+        <th class="w-32" mat-header-cell *matHeaderCellDef> פעולה </th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-raised-button color="warn" (click)="deleteItem(element)">מחק</button>
+        </td>
+        <td class="font-bold" mat-footer-cell *matFooterCellDef>
+            <button mat-raised-button color="primary" (click)="addItem()">הוסף</button>
+        </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="invoiceActionID">
+        <th class="w-12" mat-header-cell *matHeaderCellDef> פריט </th>
+        <td mat-cell *matCellDef="let element"> {{element.invoiceActionID}} </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <!-- Description Column -->
+    <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> תיאור פריט </th>
+        <td mat-cell *matCellDef="let element">
+            <input class="w-full h-full outline-none p-3 bg-slate-300 rounded-sm" type="text"
+                [(ngModel)]="element.description" (input)="emitItems(true)">
+        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <!-- Quantity Column -->
+    <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef> כמות </th>
+        <td mat-cell *matCellDef="let element">
+            <input class="w-full h-full outline-none p-3 bg-slate-300 rounded-sm" type="number"
+                [(ngModel)]="element.quantity" (input)="emitItems(true)">
+            <mat-error *ngIf="!(element.quantity > 0)">
+                כמות חייבת להיות גדולה מ-0
+            </mat-error>
+        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <!-- Price Column -->
+    <ng-container matColumnDef="unitPrice">
+        <th mat-header-cell *matHeaderCellDef> מחיר {{ vatIncluded ? 'כולל מע"מ' : 'לא כולל מע"מ' }}</th>
+        <td mat-cell *matCellDef="let element">
+            <input class="w-full h-full outline-none p-3 bg-slate-300 rounded-sm" type="number"
+                [(ngModel)]="element.unitPrice" (input)="emitItems(true)">
+            <mat-error *ngIf="(element.unitPrice === 0)">
+                מחיר לא יכול להיות שווה 0    
+        </mat-error>
+        </td>
+        <td class="font-bold" mat-footer-cell *matFooterCellDef>סכום חשבונית:</td>
+    </ng-container>
+
+    <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef> עלות שורה כולל מע"מ </th>
+        <td mat-cell *matCellDef="let element">
+            <mat-chip-list>
+                <mat-chip>{{getCostIncludingVat(element) | currency}} </mat-chip>
+            </mat-chip-list>
+        </td>
+        <td class="font-bold" mat-footer-cell *matFooterCellDef>{{ getTotalCost() | currency }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+</table>

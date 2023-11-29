@@ -1,0 +1,95 @@
+<form *ngIf="form" novalidate [formGroup]="form">
+
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2">
+    <div class="form-group" *ngIf="control('createdDate') as field">
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>תאריך נקוב בחשבונית</mat-label>
+        <input matInput [matDatepicker]="picker" [formControl]="field">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-hint>התאריך המצוין בחשבונית</mat-hint>
+        <ng-container *ngIf="field.errors as errs">
+          {{field.errors}}
+          <mat-error>שדה חובה</mat-error>
+        </ng-container>
+      </mat-form-field>
+    </div>
+    <div class="form-group" *ngIf="control('invoiceNumber') as field">
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>מספר חשבונית מס או אסמכתא</mat-label>
+        <input (input)="checkDuplicateInvoiceAction()" matInput [formControl]="field" (keypress)="valid_numbers($event);" maxlength="6">
+        <mat-hint>שש ספרות אחרונות של מס' חשבונית. ניתן להשלים באפסים במידת הצורך</mat-hint>
+        <mat-error>שדה חובה. 6 ספרות</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group" *ngIf="control('receptionDate') as field">
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>תאריך קבלה מספק</mat-label>
+        <input matInput [matDatepicker]="picker" [formControl]="field">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <ng-container *ngIf="field.errors as errs">
+          <mat-error>שדה חובה</mat-error>
+        </ng-container>
+      </mat-form-field>
+    </div>
+    <div class="form-group" *ngIf="control('description') as field">
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>פרטי חשבונית - להנה"ח</mat-label>
+        <textarea matInput [formControl]="field" placeholder="פרטי חשבונית" cdkTextareaAutosize
+          cdkAutosizeMinRows="1" ></textarea>
+        <mat-error *ngIf="field.touched && field.hasError('required')">
+          חובה למלא פרטי חשבונית
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div *ngIf="duplicateInvoice">
+      <div class="bg-red-600 text-white flex justify-between p-2 mb-4">
+        <div>
+          <div>חשבונית זו כבר קיימת במערכת</div>
+          <div>תאריך חשבונית: {{duplicateInvoice?.createdDate | date: 'dd/MM/yyyy'}}</div>
+        </div>
+        <div>
+          <button mat-icon-button (click)="navigateToInvoice(duplicateInvoice.invoiceId)">
+            <mat-icon>open_in_new</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group" *ngIf="control('supplierId') as field">
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>* מספק</mat-label><br>
+        <app-supplier-selector [formControl]="field" (selectionChange)="checkDuplicateInvoiceAction()">
+        </app-supplier-selector>
+        <mat-hint>ניתן לחפש ספק רק לפי ח.פ</mat-hint>
+      </mat-form-field>
+      <mat-error *ngIf="this.form.dirty && field.errors?.required">
+        חובה לבחור ספק
+      </mat-error>
+    </div>
+    <div [class.receiver]="!metaDataService.isReshetUser"  class="form-group" *ngIf="control('receiver') as field">
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>מבצע הפעולה</mat-label><br>
+        <app-employee-selector [formControl]="field">
+        </app-employee-selector>
+        <mat-hint>ניתן לחפש לפי שם או מס' משתמש</mat-hint>
+      </mat-form-field>
+    </div>
+    <div *ngIf="control('notes') as field">
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>הערות</mat-label>
+        <textarea matInput [formControl]="field" placeholder="הערות" cdkTextareaAutosize
+          cdkAutosizeMinRows="2"></textarea>
+        <mat-error *ngIf="field.touched && field.hasError('required')">
+          חובה למלא פרטי חשבונית
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div *ngIf="errorArray.length && this.form.touched" class="bg-red-600 text-white p-2 col-span-3">
+    <div *ngFor="let err of errorArray">
+      {{err}}
+    </div>
+  </div>
+</form>

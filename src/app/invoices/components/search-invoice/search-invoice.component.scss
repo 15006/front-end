@@ -1,0 +1,111 @@
+:host {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.mat-header-row {
+  font-weight: bold;
+}
+
+mat-form-field {
+  max-width: 150px;
+  margin: 10px;
+}
+
+.all-object-one-row {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.demo-table {
+  width: 100%;
+}
+
+.mat-row .mat-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+}
+
+.mat-row:hover .mat-cell {
+  border-color: currentColor;
+}
+
+.demo-row-is-clicked {
+  font-weight: bold;
+}
+
+.example-container {
+  height: 400px;
+  overflow: auto;
+}
+
+.mat-table-sticky {
+  border-top: 1px solid var(--p200);
+  background-color: var(--p100);
+  font-weight: bold;
+}
+
+table {
+  width: 100%;
+}
+
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+/* Structure */
+.example-container {
+  position: relative;
+}
+
+.example-table-container {
+  position: relative;
+  min-height: 200px;
+  max-height: 400px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.example-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.example-rate-limit-reached {
+  max-width: 360px;
+  text-align: center;
+}
+
+/* Column Widths */
+.mat-column-number,
+.mat-column-state {
+  max-width: 64px;
+}
+
+.mat-column-created {
+  max-width: 124px;
+}
+.buttons{
+margin-right: 5px;
+}
+mat-accordion {
+  mat-expansion-panel {
+    .loading {
+      padding-right: 50%;
+    }
+  }
+}

@@ -1,0 +1,29 @@
+<ng-container *ngIf="localGroup of group" [form-group]="group">
+    <td>
+        <div class="icon-cell">
+            <button mat-icon-button color="warn" (click)="onDeleteRow()" title="מחק פריט">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </td>
+    <td *ngIf="group.get('invoiceItemDescription') as field">
+        <div class="field" [class.invalid]="field.invalid">
+            <input matInput class="form-control" [class.invalid]="field.invalid" placeholder="יש למלא תאור פריט" [formControl]="field">
+        </div>
+    </td>
+    <td *ngIf="group.get('quantity') as field">
+        <div class="field" [class.invalid]="field.invalid">  
+            <input matInput type="number" class="form-control" [class.invalid]="field.invalid" [formControl]="field">
+        </div>
+    </td>
+    <td *ngIf="group.get('unitPrice') as field">
+        <div class="field" [class.invalid]="field.invalid">
+            <input matInput type="number" class="form-control" [class.invalid]="field.invalid" formControl="field">
+        </div>
+    </td>
+   <td>
+       <div class="fieldLabel">
+            {{ group.value.quantity * group.value.unitPrice | number}}
+       </div>
+   </td>
+</ng-container>

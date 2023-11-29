@@ -1,0 +1,72 @@
+<div class="h-2">
+  <mat-progress-bar *ngIf="(loading$ | async) !== false" mode="query"></mat-progress-bar>
+</div>
+<div *ngIf="(invoice$ | async) as invoice" class="mb-10">
+  <h5> עריכת חשבונית -מס זיהוי - מס' אסמכתא</h5>
+  <div class="px-4 pb-4">
+    <div class="flex items-end justify-between my-2">
+      <div class="flex items-center gap-1">
+        <h2>פרטי חשבונית</h2>
+        <div *ngIf="invoice?.invoiceId > 0">
+          <button (click)="openUploadDigitalDialog()" mat-icon-button matTooltip="העלאת חשבונית דיגיטלית">
+            <mat-icon [class]="{ 'text-blue-700': !!invoice.filePath  }">attach_file</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="flex gap-3 items-center">
+        <mat-chip *ngIf="invoice.invoiceId as invoiceId">
+          מס' אישור ביצוע - {{ invoiceId }}
+        </mat-chip>
+        <button *ngIf="invoice.invoiceId as invoiceId" (click)="print(invoiceId)" mat-icon-button
+          matTooltip="הדפס חשבונית">
+          <mat-icon class="text-gray-600">print</mat-icon>
+        </button>
+        <button *ngIf="!changesLocked" mat-raised-button class="saveChanges" (click)="save()">שמור שינויים</button>
+        <button *ngIf="changesLocked" mat-raised-button (click)="changeLocking(invoice.invoiceActions[0].invoiceActionStatusId)">
+          <mat-icon>lock_open</mat-icon> פתיחה לשינויים
+        </button>
+      </div>
+    </div>
+    <div class="transition-all" [class.locked]="changesLocked">
+      <app-invoice>
+      </app-invoice>
+      <div class="mb-2">
+        <h2>פרטי פעולות</h2>
+      </div>
+      <app-invoice-actions></app-invoice-actions>
+    </div>
+    <app-alert *ngIf="invoiceTotalSum as totalSum" type="info" icon="info">
+      <strong>סכום פעולות חשבונית כולל:</strong> {{ ((invoice != null && !!invoice.invoiceId && !hasOrderInvoice) ?
+      (totalSum + actionSum) : totalSum) | currency}}
+    </app-alert>
+    <div class="px-4 pb-4">
+      <div class="flex items-end justify-between my-2">
+        <div class="flex items-center gap-1">       
+        </div>
+        <div class="flex  gap-3">
+          <button *ngIf="!changesLocked" mat-raised-button class="saveChanges" color="primary" (click)="save()">שמור
+            שינויים</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div *ngIf="((allowed$ | async) == false || !!errorStr) && isVisible "
+  class="fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center backdrop-blur-md  backdrop-brightness-50">
+  <div
+    class="w-96 text-center shadow-md rounded-sm bg-blue-50 py-20 px-14 flex flex-col items-center justify-center gap-3">
+    <mat-icon class="text-red-500 scale-150">error_outline</mat-icon>
+    <span *ngIf="!errorStr" class="text-red-500 font-medium text-lg">
+      אינך מורשה לערוך פעולה זאת
+    </span>
+    <span *ngIf="!!errorStr" class="text-red-500 font-medium text-lg">
+      שגיאה
+    </span>
+    <span class="text-red-500 font-medium text-sm" *ngIf="!!errorStr">
+      {{errorStr}}
+    </span>
+    <button mat-button color="primary" (click)="backToInvoices()">חזור לאיתור חשבונית</button>
+    <button *ngIf="errorStr" mat-button color="primary" (click)="onNoClick()">סגור</button>
+  </div>
+</div> -->

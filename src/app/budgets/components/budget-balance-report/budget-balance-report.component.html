@@ -1,0 +1,104 @@
+ 
+
+<ng-container *ngFor ="let branch of (report | async) ">
+    <div >
+      בס"ד  
+      </div>
+      <div class="left-css">
+          {{strCurrentDate}}     
+      </div>
+    <header>
+      דוח ניצול תקציב רבעוני
+    </header >
+   <div>
+     <div class="middle-right-css"> 
+          <p><span class="font-bold-css">שנת לימודים </span>{{branch.schoolYearName}}</p>
+     </div>
+     <div class="middle-left-css">
+        <p><span class="font-bold-css">בין התאריכים </span>{{dateFormatedForPrint( branch.balances[0].budgetControlReports[0].reportStartDate )}}-{{dateFormatedForPrint( branch.balances[0].budgetControlReports[0].reportEndDate )}}</p>  
+      </div>
+    </div>
+      <br/>
+  <div>
+    <p class="font-bold-css">{{branch.branchName}}</p>
+  </div>
+  
+  <div *ngFor="let balance of branch.balances">
+    <p class="font-bold-css middle-plus-right-css">{{balance.balanceName}} </p>
+    <table>
+     <thead>
+      <tr>
+        <th>סעיף</th>
+        <th>תקציב רבעוני</th> 
+        <th>חודש 1</th> 
+        <th>חודש 2</th> 
+        <th>חודש 3</th> 
+        <th>יתרת הזמנה</th> 
+        <th>יתרת רבע</th> 
+        <th>יתרה קודמת</th> 
+        <th>יתרה מצטברת</th> 
+      </tr>
+    </thead>
+      <tbody>
+      <tr *ngFor="let budgetControlReport of balance.budgetControlReports">  
+      <td>{{budgetControlReport.budgetId}} {{budgetControlReport.budgetName}}</td>
+      <td>{{budgetControlReport.quarterBudget| number :'1.2-2'}}</td>
+      <td>{{budgetControlReport.month1| number :'1.2-2'}}</td>
+      <td>{{budgetControlReport.month2| number :'1.2-2'}}</td>
+      <td>{{budgetControlReport.month3| number :'1.2-2'}}</td>
+      <td>{{budgetControlReport.oderBalance| number :'1.2-2'}}</td>
+      <td>{{budgetControlReport.quarterBudget - (budgetControlReport.month1 + budgetControlReport.month2 +budgetControlReport.month3 + budgetControlReport.oderBalance)| number :'1.2-2'}}</td>
+      <td>{{budgetControlReport.previouslyBalance| number :'1.2-2'}}</td>
+      <td>{{budgetControlReport.quarterBudget - (budgetControlReport.month1 + budgetControlReport.month2 +budgetControlReport.month3 + budgetControlReport.oderBalance) + budgetControlReport.previouslyBalance| number :'1.2-2'}}</td>
+<!--       
+      <td>{{budgetControlReport.orderBalance| number :'1.2-2'}}</td>
+      <td>{{budgetControlReport.quarterBudget - (budgetControlReport.month1 + budgetControlReport.month2 +budgetControlReport.month3 + budgetControlReport.orderBalance)| number :'1.2-2'}}</td>
+      <td>{{budgetControlReport.previouslyBalance| number :'1.2-2'}}</td>
+      <td>{{budgetControlReport.quarterBudget - (budgetControlReport.month1 + budgetControlReport.month2 +budgetControlReport.month3 + budgetControlReport.orderBalance) + budgetControlReport.previouslyBalance| number :'1.2-2'}}</td>
+       -->
+      </tr>
+    </tbody>
+    <tfoot>
+      
+      <tr>
+        <td> סה"כ &nbsp; {{balance.balanceName}} </td>
+        <td>{{balance.quarterBudget| number :'1.2-2'}}</td>
+        <td>{{balance.month1| number :'1.2-2'}}</td>
+        <td>{{balance.month2| number :'1.2-2'}}</td>
+        <td>{{balance.month3| number :'1.2-2'}}</td>
+        <td>{{balance.oderBalance| number :'1.2-2'}}</td>
+        <td>{{balance.quarterBudget - (balance.month1 + balance.month2 +balance.month3 + balance.oderBalance)| number :'1.2-2'}}</td>
+        <td>{{balance.previouslyBalance| number :'1.2-2'}}</td>
+        <td>{{balance.quarterBudget - (balance.month1 + balance.month2 +balance.month3 + balance.oderBalance) + balance.previouslyBalance| number :'1.2-2'}}</td>
+        <!-- <td>{{balance.orderBalance| number :'1.2-2'}}</td>
+        <td>{{balance.quarterBudget - (balance.month1 + balance.month2 +balance.month3 + balance.orderBalance)| number :'1.2-2'}}</td>
+        <td>{{balance.previouslyBalance| number :'1.2-2'}}</td>
+        <td>{{balance.quarterBudget - (balance.month1 + balance.month2 +balance.month3 + balance.orderBalance) + balance.previouslyBalance| number :'1.2-2'}}</td>
+       -->
+      </tr>
+      
+      <tr>
+        <td> סה"כ &nbsp; סניף &nbsp;{{branch.branchName}} </td>
+        <td>{{branch.quarterBudget| number :'1.2-2'}}</td>
+        <td>{{branch.month1| number :'1.2-2'}}</td>
+        <td>{{branch.month2| number :'1.2-2'}}</td>
+        <td>{{branch.month3| number :'1.2-2'}}</td>
+        <td>{{branch.oderBalance| number :'1.2-2'}}</td>
+        <td>{{branch.quarterBudget - (branch.month1 + branch.month2 +branch.month3 + branch.oderBalance)| number :'1.2-2'}}</td>
+        <td>{{branch.previouslyBalance| number :'1.2-2'}}</td>
+        <td>{{branch.quarterBudget - (branch.month1 + branch.month2 +branch.month3 + branch.oderBalance) + branch.previouslyBalance| number :'1.2-2'}}</td>
+        <!-- <td>{{branch.orderBalance| number :'1.2-2'}}</td>
+        <td>{{branch.quarterBudget - (branch.month1 + branch.month2 +branch.month3 + branch.orderBalance)| number :'1.2-2'}}</td>
+        <td>{{branch.previouslyBalance| number :'1.2-2'}}</td>
+        <td>{{branch.quarterBudget - (branch.month1 + branch.month2 +branch.month3 + branch.orderBalance) + branch.previouslyBalance| number :'1.2-2'}}</td> -->
+     
+      </tr>
+     </tfoot>
+    
+  </table>
+    
+    </div>
+  
+  </ng-container>
+  
+    

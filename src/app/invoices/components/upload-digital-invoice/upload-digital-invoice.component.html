@@ -1,0 +1,53 @@
+<h2 mat-dialog-title>העלאת חשבונית דיגיטאלית</h2>
+ <mat-dialog-content>
+  <h3>
+    מספר אישור ביצוע {{data.invoiceId }}
+  </h3>
+  <form novalidate [formGroup]="form">
+  <div class="invoice-container" *ngIf="(invoice$ | async) as invoice"  >
+    <div class="invoice-details">
+      <input type="file"  class="input-box" (change)="onChangeFile($event.target)" >
+      
+      <br><br>      <p><b>מספר אישור ביצוע:</b>{{invoice.invoiceId}}</p>
+      <ng-container *ngIf="invoice.fileName">
+        <h4 >חשבונית דגטאלית מצורפת, ניתן להחליף קובץ חשבונית</h4>
+      </ng-container>
+     
+      <p><span class="span-property">מספר חשבונית / אסמכתא:</span>{{invoice.invoiceNumber}}</p>
+      <p><span class="span-property">ספק: </span>{{invoice.supplierName}} - <b>{{invoice.supplierId}}</b></p>
+      <p><span class="span-property">פרטי חשבונית: </span>{{invoice.invoiceDetails}} </p>
+      <!-- <p><span class="span-property">תאריך נקוב בחשבונית: </span>{{invoice.receptionDate }} </p> -->
+      <p><span class="span-property">תאריך נקוב בחשבונית: </span>{{invoice.receptionDate|date:'dd/MM/yyyy'}} </p>
+      <p><span class="span-property">סכום חשבונית: </span> {{invoice.sumInvoice}} </p>
+      <p><span class="span-property">:בחר סוג חשבונית</span></p>
+     <div *ngIf="control('taxInvoiceOption')  as field">
+        <mat-radio-group aria-label="Select an option"   [formControl]="field " required>
+          <mat-radio-button *ngFor="let tOption of (taxInvoiceOptions$ | async)" 
+          [value]="tOption.taxInvoiceOptionId"  [checked]="tOption.isChacked">
+            {{tOption.taxInvoiceOptionDesc}}</mat-radio-button>
+            <!-- <mat-error *ngIf="field.dirty && field.hasError('required')"> -->
+              <mat-error *ngIf="form.hasError('min')">
+             לבחור סוג חשבונית<strong>חובה</strong>
+            </mat-error>               
+        </mat-radio-group>
+      </div>
+    </div>
+    <div class="invoice-preview">
+      <!-- <embed src="https://iis16.noamzvia.org.il/znCtrUploadFiles/DigitalInvoices/%D7%A6%D7%91%D7%99%D7%94/2018/%D7%90%D7%95%D7%93%D7%99_%D7%9E%D7%99%D7%96%D7%95%D7%92_%D7%90%D7%95%D7%99%D7%A8-702969/ID413568-N001076.pdf" type="application/pdf" width="100%" height="600px" />  -->
+      <embed *ngIf="fileSource" [src]="fileSource" >
+      
+        </div>
+    <!-- <div *ngIf="(aaa | async) as checkTaxInvoiceOptionId">
+      {{checkTaxInvoiceOptionId}}</div>  -->
+  </div>
+   </form>
+  </mat-dialog-content>
+ 
+<mat-dialog-actions>
+  <button mat-button color=primary (click)="UpdloadInvoiceAndClose()" [disabled]="((form.invalid) || (fileSource === null))" >העלה חשבונית</button>
+  <button mat-button  (click)="Close()">בטל</button>
+</mat-dialog-actions>
+
+<!-- <p>{{json.parse()}}</p> -->
+
+

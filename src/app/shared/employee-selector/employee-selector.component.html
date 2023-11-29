@@ -1,0 +1,6 @@
+<input [readonly]="!metadata.isReshetUser" matInput [matAutocomplete]="auto" [formControl]="formControl">
+<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" panelWidth="auto" (optionSelected)="emit()">
+  <mat-option *ngFor="let user of (filteredUsers$ | async)" [value]="user">
+    <span>({{user.userId}}) {{user.firstName}} {{user.lastName}}</span>
+  </mat-option>
+</mat-autocomplete>

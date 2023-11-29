@@ -1,0 +1,91 @@
+<mat-accordion multi>
+  <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header>חיפוש חשבוניות</mat-expansion-panel-header>
+
+    <form [formGroup]=form *ngIf="form">
+      <div class="all-object-one-row">
+
+      <mat-form-field>
+        <mat-label> מס' אישור ביצוע </mat-label>
+        <input maxlength="9" (keypress)="valid_numbers($event)" matInput [formControl]="control('invoiceId')">
+        <mat-hint>חיפוש לפי אישור ביצוע מבטל את הסינונים האחרים.</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label> מס' חשבונית </mat-label>
+        <input maxlength="9" (keypress)="valid_numbers($event)" matInput [formControl]="control('invoiceNumber')">
+      </mat-form-field>
+     
+      <mat-form-field>
+        <mat-label> מס' הזמנה </mat-label>
+        <input  maxlength="9" (keypress)="valid_numbers($event)" matInput [formControl]="control('orderId')">
+      </mat-form-field>
+     
+      <div *ngIf="control('snif') as field">
+        <mat-form-field>
+            <mat-label>סניף</mat-label>
+            <mat-select [formControl]="field">
+                <mat-option *ngIf="userService.isReshetUser" [value]="null">כל הסניפים</mat-option>
+                <mat-option *ngFor="let opt of (possibleBranches$ | async)" [value]="opt.branchId">
+                    {{opt.branchName}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+  </div>
+  <div class="all-object-one-row">
+
+      <mat-form-field>
+        <mat-label> ספק </mat-label>
+        <app-supplier-selector   [formControl]="control('supplier')">
+        </app-supplier-selector>
+        <mat-hint class="hint">ניתן לחפש ספק רק לפי ח.פ</mat-hint>
+      </mat-form-field>
+      <!-- <div class="all-object-one-row"> -->
+        <div class="form-group" *ngIf="control('fromInvoiceStatus') as field">
+            <mat-form-field>
+                <mat-label>מסטטוס</mat-label>
+                <mat-select [formControl]="field">
+                    <mat-option [value]="null">כל הסטטוסים</mat-option>
+                    <mat-option *ngFor="let opt of (possibleInvoiceActionStatuses$ | async)"
+                        [value]="opt.invoiceActionStatusId">
+                        {{opt.invoiceActionStatus}}
+                        {{opt.invoiceActionStatusId}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="form-group" *ngIf="control('toInvoiceStatus') as field">
+            <mat-form-field>
+                <mat-label>לסטטוס</mat-label>
+                <mat-select [formControl]="field">
+                    <mat-option [value]="null">כל הסטטוסים</mat-option>
+                    <mat-option *ngFor="let opt of (possibleInvoiceActionStatuses$ | async)"
+                        [value]="opt.invoiceActionStatusId">
+                        {{opt.invoiceActionStatus}}
+                        {{opt.invoiceActionStatusId}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+      </div>
+      <!-- <mat-form-field>
+         <mat-label> מס' חבילה</mat-label>
+         <input matInput [formControl]="control('packageId')" >
+       </mat-form-field> -->
+
+      <button mat-raised-button color=primary (click)="searchInvoices()">חפש</button>
+      <!-- <button mat-raised-button class="spaceButton" color="primary"
+       (click)="getDefaultInvoiceSearchFunc()">ניקוי</button> -->
+      <!-- <br> -->
+      <button type="button" class="buttons" mat-raised-button color=primary (click)="reset()">ניקוי </button>
+
+      <br>
+      <small>לחיצה על חפש ללא מספר חשבונית יציג 200 חשבוניות אחרונות</small>
+    </form>
+  </mat-expansion-panel>
+  <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header>תוצאות</mat-expansion-panel-header>
+    <img class="loading" src="assets/loading/spiner.gif" *ngIf="invoiceService.isLoading" alt="">
+    <app-search-invoice-results ></app-search-invoice-results>
+  </mat-expansion-panel>
+
+
+</mat-accordion>

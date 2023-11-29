@@ -1,0 +1,43 @@
+@use '@angular/material' as mat;
+@import 'common';
+
+$plt-primary: mat.define-palette(mat.$blue-palette);
+$plt-accent: mat.define-palette(mat.$orange-palette, A200, A100, A400);
+
+$plt-warn: mat.define-palette(mat.$red-palette);
+
+$theme: mat.define-light-theme((
+  color: (
+    primary: $plt-primary,
+    accent: $plt-accent,
+    warn: $plt-warn,
+  )
+));
+
+@include common($plt-primary, $plt-accent, $plt-warn, $theme);
+
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+// .mat-form-field-label {
+//   font-family: 'Roboto', 'Open Sans', 'Helvetica Neue', sans-serif !important;
+// }
+@import '@angular/material/theming';
+$custom-typography: mat-typography-config(
+  $font-family: "'Roboto', 'Open Sans', 'Helvetica Neue', sans-serif"
+);
+
+@include angular-material-typography($custom-typography);
+
+
+
+.green-snackbar{
+  background-color: rgb(9, 135, 9);
+  color: black;
+}
+
+.red-snackbar{
+  background-color: #F44336;
+  color: black;
+}

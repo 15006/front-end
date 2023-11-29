@@ -1,0 +1,212 @@
+<h5 class="header">
+  <span>עריכת הזמנה</span>
+  <span class="header-data" *ngIf="(order$ | async) as order"> {{order.orderId}} </span>
+</h5>
+<form novalidate [formGroup]="form">
+  <fieldset [disabled]="isBusy$ | async">
+    <mat-card>
+      <span class="header-card">נתוני הזמנה</span>
+    </mat-card>
+
+    <div class="container">
+      <section>
+        <ng-container *ngIf="(isAllowSetStatus$ | async)">
+          <div class="form-group" *ngIf="control('isSetStatusMode') as field">
+            <mat-checkbox [formControl]="field">ברצוני לשנות סטטוס הזמנה</mat-checkbox>
+          </div>
+        </ng-container>
+
+        <div class="form-group" *ngIf="control('orderStatusId') as field">
+          <mat-form-field>
+            <mat-label>סטטוס הזמנה</mat-label>
+            <mat-select [formControl]="field" [disabled]="!control('isSetStatusMode').value">
+              <mat-option [value]="null" def></mat-option>
+              <mat-option *ngFor="let opt of (possibleAllOrderStatuses | async)" [value]="opt.orderStatusId">
+                {{opt.orderStatusId}} - {{opt.orderStatusDescription}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+
+        <!-- <div class="form-group" *ngIf="control('requiredDate') as field">
+          <label>תאריך אספקה תקציבי</label><br>
+          <input class="form-control" [formControl]="field" [class.is-invalid]="field.touched && field.invalid"
+            [class.is-valid]="field.valid" type="date" [min]="minimumLegalRequireDate" />
+          <div *ngIf="field.errors as errs" class="error-messages">
+            <div *ngIf="errs['minimumDate'] as err">
+
+              תאריך מינימלי: {{err.minimum | date: 'dd/MM/yyyy'}}
+            </div>
+          </div>
+        </div> -->
+        <!-- <div class="form-group" *ngIf="control('requiredDate') as field">
+            <mat-label>תאריך אספקה תקציבי</mat-label><br>
+            <input class="form-control" [formControl]="field" [class.is-invalid]="field.touched && field.invalid"
+            [class.is-valid]="field.valid" type="date" [min]="minimumLegalRequireDate" />
+            <div *ngIf="field.errors as errs" class="error-messages">
+              <div *ngIf="errs['minimumDate'] as err">
+                תאריך מינימלי: {{err.minimum | date: 'dd/MM/yyyy'}}
+              </div>
+            </div>
+        </div> -->
+
+        <!-- <p *ngIf="(schoolYearOfRequiredDate | async)  as s ">{{s}} date 0 0 0 0</p> -->
+
+        <div class="form-group" *ngIf="control('requiredDate') as field">
+        <mat-form-field appearance="fill">
+          <mat-label>תאריך אספקה תקציבי</mat-label>
+          <input [(ngModel)]="input" matInput [matDatepicker]="picker" [formControl]="field" [min]="minimumLegalRequireDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <ng-container *ngIf="field.errors as errs">
+            <mat-error *ngIf="errs['minimumDate'] as err">
+              יש לקלוט הזמנה על תאריך עתידי
+              <!-- תאריך מינימלי: {{err.minimum | date: 'dd/MM/yyyy'}} -->
+            </mat-error>
+          </ng-container>
+        </mat-form-field>
+        </div>
+        <!--
+         <div class="form-group" *ngIf="control('requiredDate') as field">
+         <mat-label>תאריך אספקה תקציבי</mat-label><br>
+          <input class="form-control" [formControl]="field" [class.is-invalid]="field.touched && field.invalid"
+            [class.is-valid]="field.valid" type="date" [min]="minimumLegalRequireDate" />
+           <div *ngIf="field.errors as errs" class="error-messages">
+            <div *ngIf="errs['minimumDate'] as err">
+              תאריך מינימלי: {{err.minimum | date: 'dd/MM/yyyy'}}
+            </div>
+          </div>
+        </div> -->
+
+        <div class="form-group" *ngIf="control('branchId') as field">
+          <mat-form-field>
+            <mat-label>בסניף</mat-label>
+            <mat-select [formControl]="field">
+              <mat-option [value]="null">בחר סניף ...</mat-option>
+              <mat-option *ngFor="let opt of (possibleBranches | async)" [value]="opt.branchId">
+                {{opt.branchName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-error *ngIf="form.get('branchId').dirty && form.get('branchId').hasError('required')">
+            חובה לבחור סניף
+          </mat-error>
+        </div>
+        <div class="form-group" *ngIf="control('budgetId') as field">
+          <mat-form-field>
+            <mat-label>בסעיף</mat-label>
+            <mat-select [formControl]="field">
+              <mat-option [value]="null">בחר סעיף ...</mat-option>
+              <mat-option *ngFor="let opt of (possibleBudgets | async)" [value]="opt.budgetId">
+                {{opt.budgetName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-raised-button color="primary" dir="ltr" class="budgetBalance" [innerText]="'יתרת סעיף :'"  (click)="getBudgetBalance()"></button>
+          <label >  {{budgetBalance===undefined ? ('- - - - - '):(budgetBalanceByQuater  | currency:"ILS")}} </label>   
+          <mat-error *ngIf="form.get('budgetId').dirty && form.get('budgetId').hasError('required')">
+            חובה לבחור סעיף
+          </mat-error> 
+        </div>
+       
+   <div class="form-group" *ngIf="control('projectId') as field">
+          <mat-form-field>
+            <mat-label>בפרויקט</mat-label>
+            <mat-select [formControl]="field">
+              <mat-option [ngValue]="null" def>בחר פרויקט ...</mat-option>
+              <mat-option *ngFor="let opt of (possibleProjects | async)" [value]="opt.projectId">
+                {{opt.projectName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <!-- <mat-hint *ngIf="(form.get('projectId').value==null) && (possibleProjects | async)">
+            לא נבחר פרויקט
+          </mat-hint>  -->
+        </div>
+
+        <div class="form-group" *ngIf="control('supplierId') as field">
+          <mat-form-field>
+            <mat-label>* מספק</mat-label><br>
+            <app-supplier-selector [formControl]="field">
+            </app-supplier-selector>
+            <mat-hint class="hint">ניתן לחפש ספק רק לפי ח.פ</mat-hint>
+            <mat-error *ngIf="form.get('supplierId').dirty && form.get('supplierId').hasError('required')">
+              חובה לבחור ספק
+            </mat-error>
+          </mat-form-field>
+        </div>
+      <br>
+        <!-- <div class="form-group" *ngIf="control('supplierId') as field">
+          <mat-form-field>
+            <mat-label>ספק</mat-label>
+            <input type="text" matInput [formControl]="field" [matAutocomplete]="suppliersAuto">
+            <mat-autocomplete #suppliersAuto="matAutocomplete" panelWidth="auto"
+              [displayWith]="supplierDisplayFunc(filteredPossibleSuppliers$ | async)">
+              <mat-option *ngFor="let option of (filteredPossibleSuppliers$ | async)" [value]="option.supplierId">
+                {{option.supplierName}} ({{option.registerNum}})
+              </mat-option>
+            </mat-autocomplete>
+            <mat-hint>ניתן לאתר ספק לפי שם או ח.פ.</mat-hint>
+          </mat-form-field>
+          <mat-error *ngIf="form.get('supplierId').hasError('required')">
+            חובה לבחור ספק
+          </mat-error>
+        </div>
+        -->
+        <!-- <div class="form-group" *ngIf="control('supplier') as field">-->
+        <!-- <mat-option *ngFor="let option of (filteredPossibleSuppliers$ | async)" [value]="option"> -->
+
+        <mat-form-field appearance="fill">
+          <mat-label>תאור הזמנה</mat-label>
+          <textarea matInput [formControl]="control('orderDescription')" placeholder="כתוב תאור הזמנה"
+            cdkTextareaAutosize cdkAutosizeMinRows="1"></textarea>
+          <mat-error *ngIf="form.get('orderDescription').dirty && form.get('orderDescription').hasError('required')">
+            חובה למלא תאור הזמנה
+          </mat-error>
+        </mat-form-field>
+
+      </section>
+    </div>
+
+
+    <mat-card>
+      <span class="header-card">פריטי הזמנה</span>
+    </mat-card>
+    <div class="container2">
+
+      <div formArrayName="orderDetails">
+        <app-order-items-table [(items)]="newItems" (itemsChange)="onChange()">
+        </app-order-items-table>
+      </div>
+    </div>
+
+  </fieldset>
+</form>
+<br>
+
+<ng-container *ngIf="isBusy$ | async">
+  <div class="spinner"></div>
+  <div style="margin-right: 10px; align-content: center">המתן בבקשה ...</div>
+</ng-container>
+
+<div class="wrapper">
+  <button mat-raised-button color="primary" style="display: inline-block" [disabled]="(!orderService.flag) || (form.invalid)||(orderService.totalSum===0) "
+    (click)="onSaveClicked()">שמור הזמנה</button>
+  <fieldset>
+    <button mat-raised-button color="primary" style="display: inline-block" (click)="onNewOrderClicked()"
+      [disabled]="(isNew$ | async)">הזמנה חדשה</button>
+  </fieldset>
+  <button mat-raised-button color="primary" style="display: inline-block" [disabled]="!(isPrintable$ | async)"
+    (click)="printOrder()">הדפס הזמנה</button>
+</div>
+
+
+<!-- || (areProjects && (selectedProjectId| async) === null) -->
+<!--
+<pre>
+  {{form.value | json}}
+</pre>
+
+<pre>
+  {{form.value.supplier | async | json }}
+ </pre>
+-->
+<div style="display: none;">{{schoolYearOfRequiredDate$|async}} {{budgetBalance$|async}} </div>

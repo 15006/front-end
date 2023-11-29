@@ -1,0 +1,12 @@
+<div class="px-5 py-3 flex items-center gap-5 text-white" [class]="{
+    'bg-amber-500': type == 'warning',
+    'bg-red-500': type == 'error',
+    'bg-green-500': type == 'success',
+    'bg-blue-500': type == 'info',
+    'bg-gray-500': type == 'neutral'
+}">
+    <mat-icon *ngIf="icon">{{icon}}</mat-icon>
+    <div>
+        <ng-content></ng-content>
+    </div>
+</div>

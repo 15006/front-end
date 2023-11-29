@@ -1,0 +1,24 @@
+<mat-sidenav-container>
+    <mat-sidenav position="start" [opened]="isSidebarOpen$ | async" (closed)="closeSidebar()">
+        <app-main-navigation-menu></app-main-navigation-menu>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <mat-toolbar color="primary" class="not-printable">
+            <button mat-icon-button (click)="toggleSidebar()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <span class="header">נעם הצבי</span>
+      
+            <div class="seperator"></div>
+            <div class="userName" [innerText]="this.helloUser"></div>
+            <mat-form-field dir="rtl" appearance="legacy">
+                <mat-label>עמותה</mat-label>
+                <mat-select [formControl]="cooperative">
+                    <mat-option *ngFor="let coop of (allCooperatives$ | async)"
+                        [value]="coop.cooperativeId">{{coop.cooperativeName}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-toolbar>
+        <ng-content></ng-content>
+    </mat-sidenav-content>
+</mat-sidenav-container>

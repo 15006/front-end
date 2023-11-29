@@ -1,0 +1,166 @@
+<ng-container *ngIf="(order$ | async) as order">
+    <ng-container *ngIf="(totalOrderDetails$ | async)  as totalOrderDetails">
+    <div class="left-css">
+      <ng-container *ngIf="order.cooperativeId == 1">
+        <!-- <img src='assets/logo/a.jpg' width="50%"> -->
+        <p>צביה- עמותה רשומה 580022150</p>
+      </ng-container>
+      <ng-container *ngIf="order.cooperativeId == 2">
+        <p>מרחביה- עמותה רשומה 580017275</p>
+      </ng-container>
+    </div>
+    <div class="rigth-css">
+      <p>{{ strCurrentDate }}</p>
+    </div>
+    <div>
+      <div>
+        <header> <!--{{order.cooperativeName}}-->
+          <div class="cooperative-css">
+            <span>{{order.cooperativeName}} </span>
+          </div>
+          <div class="software-desc-css">
+            <span>מערכת הבקרה התקציבית</span>
+          </div>
+          <div class="order-num-css">
+            <span> מספר הזמנה </span>{{order.orderId}}
+          </div>
+        </header>
+        <div class="supplier-detail-css">
+          <p><span>שם ספק : </span>{{order.supplierName}}</p>
+          <p><span>כתובת : </span>{{order.supplierAddress}}</p>
+          <p><span>עיר : </span>{{order.supplierCity}}</p>
+          <p><span >טלפון : </span><span class="ltr">{{supplierNumber}}</span></p>
+          <p><span>פקס : </span>{{order.supplierFax}}</p>
+          <!-- <p><span>מייל </span>{{order.branchId}}</p> -->
+        </div>
+  
+        <div class="branch-detail-css">
+          <p><span>שם מזמין : </span>{{order.createdByUserName}}</p>
+          <p><span>יחידה מזמינה : </span>{{order.branchName}}</p>
+          <p><span>כתובת אספקה : </span>{{order.branchAddress}}</p>
+          <p><span>טלפון : </span><span >{{ branchNumber}}</span></p>
+          <p><span>סעיף תקציב : </span>{{order.budgetName}} {{order.budgetId}}</p>
+          <p><span>פרוייקט : </span>{{order.projectName}} {{order.projectId}}</p>
+          <p><span>מועד אספקה : </span>{{order.requiredDate | date :  "dd/MM/yyyy"}}</p>
+        </div>
+       
+        <div class="font-bold-css">
+            <p><span>תאור הזמנה : </span>{{order.orderDescription}}</p>  
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>מס'</th>
+              <th>תאור פריט</th>
+              <th>מחיר כולל מע"מ</th>
+              <th>כמות</th>
+              <th>עלות שורה כולל מע"מ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr  *ngFor="let detail of order.orderDetails; let idx=index">
+              <td>{{idx+1}}</td>
+              <td>{{detail.orderDetailDescription}}</td>
+              <td>{{detail.unitPrice}}</td>
+              <td>{{detail.quantity}}</td>
+              <td>{{detail.unitPrice * detail.quantity | number}}</td>
+            </tr>
+          </tbody>
+           
+          <tfoot >
+            <tr>
+              <td></td>
+              <td></td>
+                <td>עלות ללא מע"מ : </td>
+                <td> {{(totalOrderDetails/1.17| number )}}</td> 
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                  <td>מע"מ 17% : </td>
+                   <td> {{(totalOrderDetails*0.17 / 1.17 | number )}}</td>
+              </tr>
+              <tr class="font-bold-css" >
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <!-- <td></td> -->
+
+                    <td></td>
+                    <td ><span class="sum">סכום כולל : </span><span class="sum"> {{(totalOrderDetails |currency :"ILS" )}}</span></td>
+                </tr>
+             </tfoot>
+        </table>
+  <br>
+        <!-- <div class="left-css font-bold-css" >
+          <div class="left-css font-bold-css">
+            <span>עלות ללא מע"מ : </span>
+            <span> {{(totalOrderDetails/1.17 | number )}} </span>
+          </div>
+          <br>
+          <div class="left-css font-bold-css">
+            <span> מע"מ 17% : </span>
+            <span> {{(totalOrderDetails* 0.17 | number )}}</span>
+          </div>
+          <br>
+          <div class="left-css font-bold-css">
+            <span>סה"כ : </span>
+            <span> {{(totalOrderDetails )}} </span>
+          </div>
+        </div> -->
+  
+        
+        <ul>
+          <li>נא לצרף העתק הזמנה לחשבוניות/יות</li>
+          <li>סה"כ החשבוניות לא יחרגו מהסכום הכולל בהזמנה</li>
+          <li>תשלום החשבונית על פי הזמנה זו כפוף לאישור הנהלת המוסד על ביצוע / אספקת פרטי החשבונית בהתאם להזמנה</li>
+        </ul>
+  
+        <ng-container *ngIf="userWorkInTheMainBranch$ | async">
+          <div class="text-aline-center">
+  
+            <span> אחראי רכש</span>
+            &nbsp;&nbsp;
+            <div style="display: inline-block" class="box-inline"></div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span> מרכז בקרה תקציבית</span>
+            &nbsp;&nbsp;
+            <div style="display: inline-block" class="box-inline"></div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span> סמנכ"ל</span>
+            &nbsp;&nbsp;
+            <div style="display: inline-block" class="box-inline"></div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="!(userWorkInTheMainBranch$ | async)">
+          <div class="text-aline-center">
+            <span> אחראי/ת הזמנות בביה"ס </span>
+            &nbsp;&nbsp;
+            <div style="display: inline-block" class="box-inline"></div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span> מנהל/ת ביה"ס</span>
+            &nbsp;&nbsp;
+            <div style="display: inline-block" class="box-inline"></div>
+          </div>
+        </ng-container>
+  
+  
+        <div>
+        </div>
+      </div>
+      <br>
+      <footer>
+  
+        <ng-container *ngIf="order.cooperativeId == 1" class="">
+          <img src='assets/footer/zviaFooter.JPG' width="100%">
+          
+        </ng-container>
+        <ng-container *ngIf="order.cooperativeId == 2">
+          <img src='assets/footer/merchaviaFooter.JPG' width="100%">
+          
+        </ng-container>
+      </footer><!---->
+  
+    </div>
+  </ng-container>
+  </ng-container>

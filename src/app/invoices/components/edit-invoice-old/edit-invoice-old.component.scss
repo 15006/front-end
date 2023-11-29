@@ -1,0 +1,11 @@
+.all-invoice{
+    display: flex;
+    direction: colomn;
+}
+
+.invoice-part-container{
+    display:grid;
+    grid-template-columns:380px 1fr;
+    grid-template-rows:1fr;
+}
+

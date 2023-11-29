@@ -1,0 +1,123 @@
+<!-- <pre>
+    {{form.value | json}}
+</pre> -->
+
+<mat-accordion multi>
+    <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header> חיפוש הזמנות</mat-expansion-panel-header>
+        <form [formGroup]="form">
+            <div class="all-object-one-row">
+                <div class="form-group" *ngIf="control('branchId') as field">
+                    <mat-form-field>
+                        <mat-label>סניף</mat-label>
+                        <mat-select [formControl]="field">
+                            <mat-option *ngIf="userService.isReshetUser" [value]="null">כל הסניפים</mat-option>
+                            <mat-option *ngFor="let opt of (possibleBranches$ | async)" [value]="opt.branchId">
+                                {{opt.branchName}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-group" *ngIf="control('budgetId') as field">
+                    <mat-form-field>
+                        <mat-label>סעיף</mat-label>
+                        <mat-select [formControl]="field">
+                            <mat-option [value]="null">כל הסעיפים</mat-option>
+                            <mat-option *ngFor="let opt of (possibleBudgets$ | async)" [value]="opt.budgetId">
+                                {{opt.budgetName}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="form-group" *ngIf="control('projectId') as field">
+                    <mat-form-field>
+                        <mat-label> (לשנה נוכחית) פרוייקט</mat-label>
+                        <mat-select [formControl]="field">
+                            <mat-option [value]="null">כל הפרוייקטים</mat-option>
+                            <mat-option *ngFor="let opt of (possibleProjects$ | async)" [value]="opt.projectId">
+                                {{opt.projectName}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+            </div>
+            <!-- <div class="form-group" *ngIf="control('supplierId') as field">
+                <mat-form-field>
+                    <mat-label>ספק</mat-label>
+                    <mat-select [formControl]="field">
+                        <mat-option [value]="null">כל הספקים</mat-option>
+                        <mat-option *ngFor="let opt of (possibleSuppliers$ | async)" [value]="opt.supplierId">
+                            {{opt.supplierName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div> -->
+            <div class="all-object-one-row">
+                <div class="form-group" *ngIf="control('supplierId') as field">
+                    <mat-form-field>
+                        <mat-label>ספק</mat-label>
+                        <input type="text" [maxLength]="9" matInput [formControl]="field" [matAutocomplete]="suppliersAuto" (keypress)="valid_numbers($event);">
+                        <mat-autocomplete #suppliersAuto="matAutocomplete" panelWidth="auto"
+                            [displayWith]="supplierDisplayFunc(filteredPossibleSuppliers$ | async)">
+                            <mat-option *ngFor="let opt of (filteredPossibleSuppliers$ | async)"
+                                [value]="opt.supplierId">
+                                {{opt.supplierName}} ({{opt.registerNum}})
+                            </mat-option>
+                        </mat-autocomplete>
+                        <mat-hint class="hint">ניתן לחפש ספק רק לפי ח.פ</mat-hint>
+                    </mat-form-field>
+                </div>
+                <mat-form-field>
+                    <mat-label>מסכום</mat-label>
+                    <input matInput [formControl]="control('fromOrderSum')" placeholder="-999999" value="0">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>לסכום</mat-label>
+                    <input matInput [formControl]="control('toOrderSum')" placeholder="99999" value="5000">
+                </mat-form-field>
+
+            </div>
+            <div class="all-object-one-row">
+                <div class="form-group" *ngIf="control('fromOrderStatusId') as field">
+                    <mat-form-field>
+                        <mat-label>מסטטוס</mat-label>
+                        <mat-select [formControl]="field">
+                            <mat-option [value]="null">כל הסטטוסים</mat-option>
+                            <mat-option *ngFor="let opt of (possibleAllOrderStatuses$ | async)"
+                                [value]="opt.orderStatusId">
+                                {{opt.orderStatusDescription}}
+                                {{opt.orderStatusId}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="form-group" *ngIf="control('toOrderStatusId') as field">
+                    <mat-form-field>
+                        <mat-label>לסטטוס</mat-label>
+                        <mat-select [formControl]="field">
+                            <mat-option [value]="null">כל הסטטוסים</mat-option>
+                            <mat-option *ngFor="let opt of (possibleAllOrderStatuses$ | async)"
+                                [value]="opt.orderStatusId">
+                                {{opt.orderStatusDescription}}
+                                {{opt.orderStatusId}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <mat-form-field>
+                    <mat-label>מספר הזמנה</mat-label>
+                    <input matInput [formControl]="control('orderId')" maxlength="9" (keypress)="valid_numbers($event);">
+                    <mat-hint>חיפוש לפי הזמנה מבטל את הסינונים האחרים.</mat-hint>
+                </mat-form-field>
+                <button mat-raised-button color="primary" (click)="searchOrders()">חיפוש</button>
+                <button mat-raised-button class="spaceButton" color="primary"
+                    (click)="getDefaultOrderSearchFunc()">ניקוי</button>
+
+            </div>
+            <small>החיפוש יעלה 200 הזמנות ראשונות. במידה וההזמנה לא נמצאה יש לדייק את הקרטריונים</small>
+
+
+        </form>
+    </mat-expansion-panel>
+    <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>תוצאות</mat-expansion-panel-header>
+        <img class="loading" src="assets/loading/spiner.gif" *ngIf="orderService.isLoading" alt="">
+        <order-search-results (refreshRequired)="searchOrders()"></order-search-results>
+    </mat-expansion-panel>
+</mat-accordion>

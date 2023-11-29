@@ -1,0 +1,138 @@
+<div *ngIf="totalSum >= 0 && actionSum > totalSum" class="mb-4">
+  <app-alert type="error" icon="error">
+    סכום הפעולה גדול מיתרת ההזמנה!<br>
+    הינך בחריגה של {{ actionSum - totalSum | currency }}
+  </app-alert>
+</div>
+<div *ngIf="totalSum < 0" class="mb-4">
+  <app-alert type="warning" icon="warning">
+    פעולה בחריגה של {{ -1*totalSum | currency }} כולל מע"מ
+  </app-alert>
+</div>
+<div *ngIf="totalSum > 0" class="mb-4">
+  <app-alert type="info" icon="info">
+    יתרת הזמנה: {{ totalSum | currency }} כולל מע"מ
+  </app-alert>
+</div>
+<form *ngIf="actionForm" [formGroup]="actionForm" class="">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-2">
+    <div class="form-group" *ngIf="control('branchId') as field">
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>בסניף</mat-label>
+        <mat-select [formControl]="field">
+          <mat-option [value]="null">בחר סניף ...</mat-option>
+          <mat-option *ngFor="let opt of (possibleBranches | async)" [value]="opt.branchId">
+            {{opt.branchName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error *ngIf="actionForm.touched && field.hasError('required')">
+        חובה לבחור סניף
+      </mat-error>
+    </div>
+    <div class="form-group" *ngIf="control('budgetId') as field">
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>בסעיף</mat-label>
+        <mat-select [formControl]="field">
+          <mat-option [value]="null">בחר סעיף ...</mat-option>
+          <mat-option *ngFor="let opt of (possibleBudgets | async)" [value]="opt.budgetId">
+            {{opt.budgetName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error *ngIf="actionForm.touched && field.hasError('required')">
+        חובה לבחור סעיף
+      </mat-error>
+    </div>
+
+    <div class="form-group" *ngIf="control('projectId') as field">
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>בפרויקט</mat-label>
+        <mat-select [formControl]="field">
+          <mat-option [ngValue]="null" def>בחר פרויקט ...</mat-option>
+          <mat-option *ngFor="let opt of (possibleProjects | async)" [value]="opt.projectId">
+            {{opt.projectName}}
+            <span *ngIf="isReshetUser">
+              ({{opt.projectNum}})
+            </span>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error *ngIf="actionForm.dirty && actionForm.errors?.projectId">
+        {{actionForm.errors.projectId}}
+      </mat-error>
+      <mat-error *ngIf="actionForm.dirty && control('valueDate').hasError('required')">
+        יש להזין תאריך ערך על מנת לבחור בפרויקט
+      </mat-error>
+    </div>
+    <div class="form-group w-full" *ngIf="control('orderId') as field">
+      <div class="flex gap-4 items-center">
+        <mat-form-field class="w-full" appearance="fill">
+          <mat-label>מס' הזמנה</mat-label>
+          <input matInput type="text" placeholder="מס' הזמנה"  maxlength="6" (keypress)="valid_numbers($event)" [formControl]="field">
+        </mat-form-field>
+        <div *ngIf="isReshetUser" class="flex items-center">
+          <button (click)="retrieveOrder()" mat-flat-button color="primary">שלוף נתונים</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group w-full" *ngIf="control('invoiceActionStatusId') as field">
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>סטטוס פעולה</mat-label>
+        <mat-select (selectionChange)="ifInvoiceActionStatusIdTouched()" [formControl]="field">
+          <mat-option [ngValue]="null" def [disabled]="true">בחר סטטוס ...</mat-option>
+          <mat-option *ngFor="let opt of possibleInvoiceActionStatuses$ | async"   [value]="opt.invoiceActionStatusId" [disabled]="opt.invoiceActionStatusId>10 && !isReshetUser">
+            {{opt.invoiceActionStatusId}} - {{opt.invoiceActionStatus}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error *ngIf="actionForm.errors?.invoiceActionStatusId">
+        {{actionForm.errors.invoiceActionStatusId}}
+      </mat-error>
+    </div>
+    <div class="">
+      <div class="form-group" *ngIf="control('description') as field">
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>פרטי פעולה</mat-label>
+          <textarea matInput [formControl]="field" placeholder="הערות" cdkTextareaAutosize
+            cdkAutosizeMinRows="1"></textarea>
+        </mat-form-field>
+        <mat-error *ngIf="actionForm.dirty && actionForm.errors?.description as err">
+          {{err}}
+        </mat-error>
+      </div>
+    </div>
+    <div class="flex flex-col sm:flex-row gap-2">
+      <div class="form-group" *ngIf="control('valueDate') as field">
+        <mat-form-field appearance="fill">
+          <mat-label>תאריך ערך</mat-label>
+          <input [(ngModel)]="input" matInput [matDatepicker]="picker" [formControl]="field">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <ng-container *ngIf="actionForm.touched && field.errors as errs">
+          <mat-error>שדה חובה</mat-error>
+        </ng-container>        
+      </div>
+      <!-- valuteDate >= orderDate -->
+      <div class="form-group" *ngIf="control('orderDate') as field">
+        <mat-form-field appearance="fill">
+          <mat-label>תאריך אספקה</mat-label>
+          <input matInput [matDatepicker]="picker" [formControl]="field">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <ng-container *ngIf="field.errors as errs">
+            <mat-error>שדה חובה</mat-error>
+          </ng-container>
+        </mat-form-field>
+        <div *ngIf="actionForm.touched && actionForm.errors && actionForm.errors.dateMismatch as dm"
+          class="bg-red-600 text-white p-2">
+          {{dm}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mb-4">
+    <app-invoice-action-items [(items)]="newItems" (itemsChange)="onChange()">
+    </app-invoice-action-items>
+  </div>
+</form>
+<!-- <button mat-raised-button color="primary" class="saveChanges" (click)="save()">שמור שינויים</button> -->

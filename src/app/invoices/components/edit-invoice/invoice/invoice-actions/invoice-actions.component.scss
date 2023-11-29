@@ -1,0 +1,15 @@
+.i-container {
+  @apply w-full min-h-[468px] border-gray-50 shadow-sm mb-5;
+}
+
+.sidenav-content {
+  height: 100%;
+  width: 100%;
+  @apply p-4 max-w-full overflow-auto;
+  background: #efefef;
+  border: 1px solid #ddd;
+}
+
+.sidenav {
+  @apply bg-blue-100 shadow-md border-none;
+}

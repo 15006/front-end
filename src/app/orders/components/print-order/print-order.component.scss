@@ -1,0 +1,77 @@
+header{
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.a{
+    text-align: center;
+}
+
+table{
+    width: 100%;
+    td{
+        text-align: center;
+    }
+}
+.right-css{
+    float: right;
+}
+.left-css{
+    margin-left: 10px;
+    float: left;
+}
+
+.cooperative-css{
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.software-desc-css{
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.order-num-css{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.sum{
+    font-size: 18px;
+//    margin-right: 90%;
+}
+.box-inline{
+    border: 1px solid #080808;
+    width: 80px;
+    height: 20px;
+    /* float: right; */
+}
+
+.font-bold-css{
+    font-weight: bold
+}
+
+
+.supplier-detail-css{
+  padding:50px;
+  width:50%;
+  float:right;
+}
+
+.branch-detail-css{
+    padding: 50px;
+    width:50%;
+    float: left;
+  }
+  
+  
+  table { border-collapse:collapse; }
+table thead th { border-bottom: 1px solid #000; }
+table tbody tr { border-top: 0.2px solid rgb(206, 206, 206); border-bottom: 0.2px solid rgb(206, 206, 206);  }
+  
+  
+  

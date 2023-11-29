@@ -1,0 +1,14 @@
+// .form-group {
+//     @apply flex-col gap-1 mb-2;
+// }
+
+:host ::ng-deep .mat-form-field-infix {
+    width: 100% !important;
+}
+
+
+.receiver{
+    opacity: 0.35;
+}
+// :host ::ng-deep mat-error {
+// }

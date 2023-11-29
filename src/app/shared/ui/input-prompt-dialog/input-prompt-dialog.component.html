@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+    <p *ngIf="data.message">{{data.message}}</p>
+    <div class="mb-4" *ngIf="data.html" [innerHTML]="data.html"></div>
+    <form *ngIf="form" [formGroup]="form">
+        <mat-form-field *ngIf="form.get('input') as field" appearance="fill" class="w-full">
+            <mat-label>{{data.label}}</mat-label>
+            <input matInput [formControl]="field">
+            <mat-error *ngIf="field.invalid && field.errors as errors">
+                <span *ngIf="errors.required">
+                    {{data.errors.required}}
+                </span>
+                <span *ngIf="errors.pattern">
+                    {{data.errors.pattern}}
+                </span>
+            </mat-error>
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">{{data.cancelText}}</button>
+    <div class="flex-1"></div>
+    <button mat-button color="primary" (click)="onSave()" cdkFocusInitial>{{data.confirmText}}</button>
+</div>

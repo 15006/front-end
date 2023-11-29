@@ -1,0 +1,109 @@
+<table mat-table [dataSource]="dataSource" class="example-table" matSort 
+       matSortActive="orderId" matSortDisableClear matSortDirection="desc">
+      
+    
+<ng-container matColumnDef="isCloseable">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+    <td mat-cell *matCellDef="let row"> 
+        <button mat-icon-button color="warn" [disabled]="!row.isCloseable" (click)="closeOrder(row.orderId)" title="סגירת הזמנה">
+            <mat-icon>money_off</mat-icon>
+          </button>
+    </td>
+</ng-container>
+<ng-container matColumnDef="isEditable">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+    <td mat-cell *matCellDef="let row"> 
+        <div class="example-button-container">
+            <button mat-icon-button color="primary" [disabled]="!row.isEditable" (click)="edit(row.orderId)" title="עריכת הזמנה">
+                <mat-icon>edit</mat-icon>
+              </button>
+        </div>
+    </td>
+</ng-container>
+<!-- <mat-icon>cloud_upload</mat-icon> -->
+<ng-container matColumnDef="isPrintable">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+    <td mat-cell *matCellDef="let row"> 
+        <div class="example-button-container">
+           
+
+              <button mat-icon-button color="primary" [disabled]="!row.isPrintable"
+                    title="הצג לפני הדפסה" (click)="print(row.orderId)" >
+                <mat-icon >print</mat-icon>
+             </button>
+
+     </div>
+</ng-container>
+    <!-- orderId Column -->
+    <ng-container matColumnDef="orderId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>מספר הזמנה</th>
+        <td mat-cell *matCellDef="let row">{{row.orderId}}</td>
+    </ng-container>
+
+    <!-- branchName Column -->
+    <ng-container matColumnDef="branchName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>סניף</th>
+        <td mat-cell *matCellDef="let row">{{row.branchName}}</td>
+    </ng-container>
+
+     <!-- budgetName Column -->
+     <ng-container matColumnDef="budgetName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>סעיף</th>
+        <td mat-cell *matCellDef="let row">{{row.budgetName}}</td>
+    </ng-container>
+
+    <!-- projectName Column -->
+    <ng-container matColumnDef="projectName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>פרוייקט</th>
+        <td mat-cell *matCellDef="let row">{{row.projectName}}</td>
+    </ng-container>
+        
+  <!-- orderDescription Column -->
+  <ng-container matColumnDef="orderDescription">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>תאור הזמנה</th>
+    <td mat-cell *matCellDef="let row">{{row.orderDescription}}</td>
+    </ng-container>
+
+<!-- supplierName Column -->
+<ng-container matColumnDef="supplierName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>ספק</th>
+    <td mat-cell *matCellDef="let row">{{row.supplierName}}</td>
+</ng-container>
+
+    <!-- requiredDate Column -->
+    <ng-container matColumnDef="requiredDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>ת. אספקה</th>
+        <td mat-cell *matCellDef="let row">{{row.requiredDate | date :  "dd/MM/yyyy"}}</td>
+    </ng-container>
+
+    <!-- orderBalance Column -->
+    <ng-container matColumnDef="orderBalance">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>יתרת הזמנה</th>
+        <td mat-cell *matCellDef="let row">{{row.orderBalance | number : "0.00"}}</td>
+    </ng-container>
+
+    <!-- orderTotal Column -->
+    <ng-container matColumnDef="orderTotal">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>סכום</th>
+        <td mat-cell *matCellDef="let row">{{row.orderTotal | number : "0.00"}}</td>
+    </ng-container>
+
+    <!-- orderStatusId Column -->
+    <ng-container matColumnDef="orderStatusId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>סטטוס</th>
+        <td mat-cell *matCellDef="let row">{{row.orderStatusId | number }}</td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="link">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>קליטת חשבונית</th>
+        <td mat-cell *matCellDef="let row">
+            <a *ngIf="getInvoiceUrl(row) | async as url" mat-flat-button color="primary" [ngStyle]="{'display':orderService.ifDisabled(row)? 'none':'block'} "
+                [queryParams]="url.qparams"
+                [routerLink]="url.path">קליטת חשבונית</a>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

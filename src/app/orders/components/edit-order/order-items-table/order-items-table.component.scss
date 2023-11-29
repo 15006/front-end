@@ -1,0 +1,57 @@
+:host {
+    display: flex;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 800px;
+    margin: 20px;
+    table-layout: fixed;
+}
+
+table thead th{
+    overflow: hidden;
+    white-space: pre-wrap;
+    text-overflow: ellipsis;
+    padding: 8px;
+    border: 1px solid var(--p100);
+    background-color: var(--p100);
+    color: var(--pc100);
+    font-weight: normal;
+}
+
+table tfoot td{
+    overflow: hidden;
+    white-space: pre-wrap;
+    text-overflow: ellipsis;
+    padding: 0px 8px;
+    border: 1px solid var(--p500);
+    background-color: var(--p500);
+    color: var(--pc500);
+    font-weight: normal;
+}
+
+tr:nth-child(even) {
+    background-color: var(--b-card);  
+}
+
+tr:nth-child(odd) {
+    background-color: var(--p50); 
+}
+
+.icon-cell {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.tbl-items {
+    td, th{
+        @apply px-2;
+    }
+}

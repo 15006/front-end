@@ -1,0 +1,71 @@
+<ng-container *ngIf="(listOfInvoices$ | async) as InvoiceCenteralizedArray">
+    <fieldset>
+        <div class="right-css">
+            בס"ד
+        </div>
+        <div class="left-css">
+            {{strCurrentDate}}
+        </div>
+
+
+        <div class="header-css">
+            <div> דו"ח שינוי סטטוס מרוכז
+                <!-- {{test.invoiceId}} -->
+            </div>
+
+        </div>
+        <br>
+        <div>
+            <div class="invoice-detail-css">
+                <p class="bold-size-biger-css">
+                    <span class="span-property"> סטטוס - {{this.invoiceService.centeralizedInvoicesForPrint.statusId}}
+                    </span>
+                </p>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>חשבונית</th>
+                    <th>פעולה</th>
+                    <th>אסמכתא</th>
+                    <th>סניף</th>
+                    <th>סעיף</th>
+                    <th>ספק</th>
+                    <th>ת. ח-ן</th>
+                    <th>ת.ערך</th>
+                    <th>תאור</th>
+                    <th>סכום כולל</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let InvoiceCenteralized of InvoiceCenteralizedArray;let idx=index">
+                    <td>{{idx+1+"."}}</td>
+                    <td>{{InvoiceCenteralized.invoiceId}} </td>
+                    <td>{{InvoiceCenteralized.invoiceActionId}} </td>
+                    <td>{{InvoiceCenteralized.invoiceNumber}} </td>
+                    <td>{{InvoiceCenteralized.branchName}}</td>
+                    <td>{{InvoiceCenteralized.budgetId}}-{{InvoiceCenteralized.budgetName}}</td>
+                    <td>{{InvoiceCenteralized.supplierId}}-{{InvoiceCenteralized.supplierName}}</td>
+                    <td>{{dateFormatedForPrint(InvoiceCenteralized.invoiceCreatedDate)}}</td>
+                    <td>{{dateFormatedForPrint(InvoiceCenteralized.valueDate)}}</td>
+                    <td>{{InvoiceCenteralized.invoiceDescription}}</td>
+                    <td>{{InvoiceCenteralized.sumInvoiceAction | number :'1.2-2'}}</td>
+                </tr>
+            </tbody>
+
+
+        </table>
+
+        <!-- <footer>
+      
+
+        </footer> -->
+        <div id="footer">
+            <span class="sum"> סה"כ + מע"מ:</span>
+            <span class="sum">{{this.sum | currency :"ILS"}}</span>
+        </div>
+    </fieldset>
+</ng-container>

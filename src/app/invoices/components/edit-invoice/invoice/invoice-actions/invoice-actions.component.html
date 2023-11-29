@@ -1,0 +1,47 @@
+<!-- <div class="my-5" *ngIf="invoice.invoiceId">
+  <button (click)="addAction()" color="primary" mat-raised-button>הוסף פעולה</button>
+</div> -->
+<mat-drawer-container class="i-container" autosize>
+  <mat-drawer [mode]="mode" #drawer class="sidenav" [opened]="opened">
+    <div class="flex">
+      <button mat-icon-button>
+        <mat-icon (click)="opened = false">chevron_right</mat-icon>
+      </button>
+      <div class="flex-1"></div>
+      <button *ngIf="invoice.invoiceId" (click)="addAction()" color="primary" mat-flat-button class="lockable">הוסף פעולה</button>
+    </div>
+    <div class="w-60 p-4 hover:bg-blue-50 transition-all cursor-pointer"
+      [ngClass]="{ 'font-bold bg-blue-200 text-gray-900 border-r-gray-600 border-r-4': invoiceAction === selectedInvoiceAction }"
+      (click)="invoiceAction === selectedInvoiceAction ? null : selectInvoiceAction(invoiceAction)"
+      *ngFor="let invoiceAction of invoice?.invoiceActions; index as i;">
+      {{ invoiceAction.invoiceActionId}} - {{invoiceAction.description || 'ללא תיאור'}}
+      <!-- <div class="text-xs font-medium text-gray-600">סניף פרויקט</div> -->
+      <!-- TODO: add branch and project -->
+      <div class="text-xs font-medium text-gray-600 leading-4 mt-1">
+        <div *ngIf="invoiceAction.branchId && (getBranchById(invoiceAction.branchId) | async) as branch">
+          <strong>סניף:</strong> {{ branch.branchName}}
+        </div>
+        <div *ngIf="invoiceAction.budgetId && (getBudgetById(invoiceAction.budgetId) | async) as budget">
+          <strong> תקציב:</strong> {{ budget.budgetName}}
+        </div>
+        <div *ngIf="invoiceAction.projectId && (getProjectById(invoiceAction.projectId) | async) as project">
+          <strong> פרויקט:</strong> {{ project.projectName}}
+        </div>
+        <div *ngIf="!!invoiceAction.invoiceActionStatusId && (getActionStatusById(invoiceAction.invoiceActionStatusId) | async) as status">
+          <strong> סטטוס: </strong> {{ status.invoiceActionStatus }}
+        </div>
+        <div>{{ sumAction(invoiceAction) | async | currency }}</div>
+      </div>
+    </div>
+  </mat-drawer>
+  <div *ngIf="invoice.invoiceActions?.length" class="flex">
+    <div *ngIf="!opened">
+      <button mat-icon-button>
+        <mat-icon (click)="opened = true">chevron_left</mat-icon>
+      </button>
+    </div>
+    <div class="sidenav-content">
+      <app-invoice-action-content></app-invoice-action-content>
+    </div>
+  </div>
+</mat-drawer-container>

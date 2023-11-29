@@ -1,0 +1,22 @@
+<h2>
+    <mat-icon>shopping_cart</mat-icon>
+    הזמנות
+</h2>
+<a routerLink="orders/search" appCloseSidebar>איתור (הדפסה, עריכה וסגירה)</a>
+<a routerLink="orders/edit" appCloseSidebar>יצירה</a>
+<h2>
+    <mat-icon>receipt</mat-icon>
+    חשבוניות
+</h2>
+<a routerLink="invoices/search" appCloseSidebar>איתור (הדפסה והעלאת חשבונית דיגיטלית)</a>
+<a *ngIf="isReshetUser$ | async" class="newInvoice" (click)="goToNewInvoice()" appCloseSidebar>חשבונית חדשה</a>
+
+
+<!-- <a routerLink="invoices/download-package" appCloseSidebar>הורדת חבילת חשבוניות</a>
+<a routerLink="invoices/upload-digital" appCloseSidebar>העלאת חשבונית דיגיטל</a> -->
+<!-- <h2>
+    <mat-icon>leaderboard</mat-icon>
+    תקציב
+</h2> -->
+<!-- <a routerLink="budgets/transfer" appCloseSidebar>הקדמת תקציב</a> -->
+<!-- <a routerLink="budgets/budget-balance-report" appCloseSidebar>דו"ח ניצול תקציב</a> -->

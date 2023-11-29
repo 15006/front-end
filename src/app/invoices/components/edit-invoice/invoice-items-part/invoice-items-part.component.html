@@ -1,0 +1,51 @@
+<p>invoice-items-part works!</p>
+
+<table>
+    <colgroup>
+        <col style="width:44px">
+        <col style="width:100%">
+        <col style="width:100px">
+        <col style="width:100px">
+        <col style="width:100px">
+    </colgroup>
+    <thead>
+        <tr>
+            <th></th>
+            <th>תאור פריט</th>
+            <th>כמות</th>
+            <th>מחיר יחידה כולל מע"מ</th>
+            <th>סך לפריט</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngIf="localFormArray?.controls">
+            <tr app-order-items-row (deleteRow)="deleteRow(index)"
+                *ngFor="let group of localFormArray.controls; let index = index"
+            >
+            </tr>
+        </ng-container>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>
+                <div class="icon-cell">
+                    <button mat-icon-button (click)="onAddRow()" title="הוסף פריט">  
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+        </tr>
+    </tfoot>
+</table>

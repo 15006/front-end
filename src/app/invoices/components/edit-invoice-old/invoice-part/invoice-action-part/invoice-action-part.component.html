@@ -1,0 +1,105 @@
+<p>invoice-action-part works!</p>
+<!-- <mat-paginator [length]="100"
+              [pageSize]="10"
+              [pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator> -->
+
+<h5>פעולה תחשבונית - מס">>" - סטטוס פעולה ניתן לשינוי</h5>
+
+<form>
+    <div class="form-group" *ngIf="control('branchId') as field">
+        <mat-form-field >
+            <mat-label>בסניף</mat-label>
+            <mat-select [formControl]="field">
+                <mat-option [value]="null">בחר סניף...</mat-option>
+                <mat-option *ngFor="let opt of (possibleBranches$ | async)" [value]="opt.branchId">{{opt.branchName}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="field.dirty && field.hasError('required')">
+                חובה לבחור סניף
+            </mat-error>
+        </mat-form-field>
+        
+
+    </div>
+    <div class="form-group" *ngIf="control('budgetId') as field">
+        <mat-form-field>
+            <mat-label>סעיף</mat-label>
+            <mat-select [formControl]="field">
+                <mat-option [value]="null">בחר סעיף...</mat-option>
+                <mat-option *ngFor="let opt of (possibleBudgets$ | async )" [value]="opt.budgetId">{{opt.budgetName}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="field.dirty && field.hasError('required')">
+                חובה לבחור סעיף
+            </mat-error>
+        </mat-form-field>
+    </div>
+    
+    <div class="form-group" *ngIf="control('projectId') as field">
+        <mat-form-field >
+            <mat-label>פרוייקט</mat-label>
+            <mat-select [formControl]="field">
+                <mat-option [value]="null">בחר פרוייקט</mat-option>
+                <mat-option *ngFor="let opt of (possibleProjects$ | async)" [value]="opt.projectId">{{opt.projectName}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="field.dirty && field.hasError('required')">
+            אם יש פרוייקטים - חובה לבחור פרוייקט
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="from-group" *ngIf="control('valueDate') as field">
+        <mat-form-field appearance="fill"> 
+            <mat-label>תאריך ערך</mat-label>
+            <input matInput [matDatepicker]="picker" [formControl]="field" [min]="minDateByRoll">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <ng-container *ngIf="field.erorrs as errs">
+                <mat-error *ngIf="errs['minimumDate'] as err ">שגיאת תאריך ערך??</mat-error>
+            </ng-container>
+        </mat-form-field>
+    </div>
+<p>{{(selectedBudgetId$ | async)}} selectedBudgetId</p>  
+<p>{{(schoolYearByValueDate$ | async)}} schoolYearByValueDate</p>
+
+    <div >
+        <mat-form-field appearance="fill">
+            <mat-label>פרטי פעולה - להנה"ח</mat-label>
+            <textarea matInput [formControl]="control('invoiceActionDescription')"
+            placeholder="פרטי פעולה" cdkTextareaAutosize cdkAutosizeMinRows="3"></textarea>
+            <mat-error *ngIf="form.get('invoiceActionDescription').dirty && form.get('invoiceActionDescription').hasError('required')"></mat-error>
+        </mat-form-field>
+    </div>
+      תאריך אספקת הזמנה
+      {{(orderRequiredDate$ | async)}}    
+    <div class="form-group" *ngIf="control('orderId') as field">
+        <mat-form-field>
+            <mat-label>מספר הזמנה</mat-label>
+            <input matInput [disabled]="this.canChangeOrder" [formControl]="field" placeholder="מספר הזמנה">
+            <mat-error *ngIf="this.canInsertInvoiceWithOutOrder || (field.dirty && field.hasError('required'))"></mat-error>
+        </mat-form-field>
+    </div>
+
+    <div class="form-group" *ngIf="control('invoiceActionStatusId') as field">
+        <mat-form-field >
+            <mat-label>סטטוס אישור ביצוע</mat-label>
+            <mat-select [formControl]="field">
+                <mat-option [value]="-1">קביעת מערכת</mat-option>
+                <mat-option *ngFor="let opt of (possibleInvoiceActionStatus$ | async)" [value]="opt.invoiceActionStatusId">{{opt.invoiceActionStatus}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+תאריך סטטוס
+    </div>
+</form>
+
+
+
+
+
+
+מספר הזמנה - )()יתרת הזמנה()
+
+
+
+מבצע פעולה???????
+
+תאריך ערך )+(תאריך אספקת הזמנה)
+

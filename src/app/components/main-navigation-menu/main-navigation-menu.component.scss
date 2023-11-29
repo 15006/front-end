@@ -1,0 +1,37 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+}
+
+mat-icon {
+    font-size: 32px;
+    width: auto;
+    height: auto;
+    margin: 4px;
+    color: var(--p800);
+}
+.newInvoice{
+    cursor: pointer;
+}
+h2 {
+    background: var(--p50);
+    margin: 0px;
+    padding-right: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: var(--p800);
+}
+
+h2:nth-child(n+2) {
+    margin-top: 16px;
+}
+
+a {
+    padding-right: 28px;
+    text-decoration: none;
+    color: var(--p700);
+    margin: 4px;
+    font-weight: bold;
+}

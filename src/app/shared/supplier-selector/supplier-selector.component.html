@@ -1,0 +1,18 @@
+<!-- <select [formControl]="formControl">
+    <option *ngFor="let supplier of (allSuppliers$ | async)"
+        [value]="supplier.supplierId"
+    >
+        {{supplier.supplierName}}
+    </option>
+</select> -->
+
+<input maxlength="11" matInput [matAutocomplete]="auto" [formControl]="formControl" (keypress)="valid_numbers($event);">
+<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" panelWidth="auto" (optionSelected)="emit()">
+    <mat-option *ngFor="let supplier of (filteredSuppliers$ | async)" [value]="supplier">
+        <span>{{supplier.supplierName}}
+        </span>
+        <mat-chip matTooltip="מספר עוסק">{{supplier.registerNum}}</mat-chip>
+        <span> | </span>
+        <mat-chip matTooltip="מס' זיהוי">{{supplier.supplierId}}</mat-chip>
+    </mat-option>
+</mat-autocomplete>

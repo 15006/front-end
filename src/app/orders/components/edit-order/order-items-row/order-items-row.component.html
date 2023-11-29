@@ -1,0 +1,94 @@
+<!-- <ng-container *ngIf="localGroup as group" [formGroup]="group">
+    <td>
+        <div class="icon-cell">
+            <button mat-icon-button color="warn" (click)="onDeleteRow()" title="מחק פריט">
+                <mat-icon>delete</mat-icon>
+            </button>    
+        </div>
+    </td>
+    <td *ngIf="group.get('orderDetailDescription') as field">
+        <div class="field" [class.invalid]="field.invalid">
+            <input matInput class="form-control" [class.invalid]="field.invalid" placeholder="יש למלא תאור פריט" [formControl]="field">
+        </div>
+    </td>
+    <td *ngIf="group.get('quantity') as field" (keyup)="quantity(field.value)" >
+        <div class="field" [class.invalid]="field.invalid">
+            <input matInput type="number" class="form-control" [class.invalid]="field.invalid" [formControl]="field">
+        </div>
+    </td>
+    <td *ngIf="group.get('unitPrice') as field" (keyup)="unitPrice(field.value)" >
+        <div class="field" [class.invalid]="field.invalid">
+            <input matInput type="number" class="form-control" [class.invalid]="field.invalid" [formControl]="field">
+        </div>
+    </td>
+    <td>
+        <div class="field" >
+            {{ group.value.quantity * group.value.unitPrice | number }}
+        </div>
+    </td>
+</ng-container> -->
+
+
+
+
+
+
+<!-- <table mat-table [dataSource]="orderService.orderTable" class="mat-elevation-z8 w-full tbl-items">
+    -- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- actions Column -->
+    <!-- <ng-container matColumnDef="actions">
+        <th class="w-32" mat-header-cell *matHeaderCellDef> פעולה </th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-raised-button color="warn" (click)="deleteItem(element)">מחק</button>
+        </td>
+        <td class="font-bold" mat-footer-cell *matFooterCellDef>
+            <button mat-raised-button color="primary" (click)="addItem()">הוסף</button>
+        </td>
+    </ng-container> -->
+
+    <!-- Description Column -->
+    <!-- <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> תיאור פריט </th>
+        <td mat-cell *matCellDef="let element">
+            <input class="w-full h-full outline-none p-3 bg-slate-300 rounded-sm" type="text"
+                [(ngModel)]="element.description" (input)="emitItems(true)">
+        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container> -->
+
+    <!-- Quantity Column -->
+    <!-- <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef> כמות </th>
+        <td mat-cell *matCellDef="let element">
+            <input class="w-full h-full outline-none p-3 bg-slate-300 rounded-sm" type="number"
+                [(ngModel)]="element.quantity" (input)="emitItems(true)">
+            <mat-error *ngIf="!(element.quantity > 0)">
+                כמות חייבת להיות גדולה מ-0
+            </mat-error>
+        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    Price Column
+    <ng-container matColumnDef="unitPrice">
+        <th mat-header-cell *matHeaderCellDef> מחיר</th>
+        <td mat-cell *matCellDef="let element">
+            <input class="w-full h-full outline-none p-3 bg-slate-300 rounded-sm" type="number"
+                [(ngModel)]="element.unitPrice" (input)="emitItems(true)">
+            <mat-error *ngIf="!(element.unitPrice > 0)">
+                מחיר חייב להיות גדול מ-0
+            </mat-error>
+        </td>
+        <td class="font-bold" mat-footer-cell *matFooterCellDef>סכום פעולה</td>
+    </ng-container>
+
+    <ng-container matColumnDef="total">
+        <td class="font-bold" mat-footer-cell *matFooterCellDef>{{ getTotalCost() | currency }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="orderService.displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: orderService.displayedColumns;"></tr>
+    <tr mat-footer-row *matFooterRowDef="orderService.displayedColumns; sticky: true"></tr>
+</table> --> 

@@ -1,0 +1,19 @@
+<h5>  עריכת חשבונית -מס זיהוי  - מס' אסמכתא</h5>
+
+
+<div class="all-invoice">
+<div class="invoice-container">
+  
+<app-invoice-part  [invoiceVm$]="this.mergeInvoiceVm$"></app-invoice-part>
+<!-- [invoiceForm]="this.form" -->
+</div>
+
+<!-- <pre>{{this.orderId$ | async}} orderId$</pre>
+
+<div>{{this.invoiceId$ | async}} invoiceId$</div> -->
+
+<pre>{{this.mergeInvoiceVm$ | async}} mergeInvoiceVm$</pre>
+
+
+</div>
+

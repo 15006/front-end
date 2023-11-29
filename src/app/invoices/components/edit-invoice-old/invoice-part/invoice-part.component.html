@@ -1,0 +1,87 @@
+<p>invoice-part works!</p>
+חשבונית
+<!-- {{invoice$.invoiceId}} -->
+
+<form novalidate [formGroup]="form">
+
+  <div class="form-group" *ngIf="control('createdDate') as field">
+    <mat-form-field appearance="fill">
+      <mat-label>תאריך נקוב בחשבונית</mat-label>
+      <input matInput [matDatepicker]="picker" [formControl]="field">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <ng-container *ngIf="field.errors as errs">
+        <mat-error>שדה חובה</mat-error>
+      </ng-container>
+    </mat-form-field>
+  </div>
+
+  תאריך נקוב - תאריך מחיר
+  <br>
+  <mat-form-field appearance="fill">
+    <mat-label>מס' אסמכתא</mat-label>
+    <input matInput [formControl]="control('invoiceNumber')" (keypress)="valid_numbers($event);" maxlength="6">
+    <mat-hint>.שש ספרות אחרונות של מס' חשבונית. ניתן להשלים באפסים במידת הצורך</mat-hint>
+    <mat-error>שדה חובה. 6 ספרות</mat-error>
+  </mat-form-field>
+  <br>
+  מספר חשבונית מס או אסמכתא
+  <br>
+  <div class="form-group" *ngIf="control('supplierId') as field">
+    <mat-form-field>
+      <mat-label>* מספק</mat-label><br>
+      <app-supplier-selector [formControl]="field">
+      </app-supplier-selector>
+      <mat-hint>ניתן לחפש ספק רק לפי ח.פ</mat-hint>
+      <mat-error *ngIf="form.get('supplierId').dirty && form.get('supplierId').hasError('required')">
+        חובה לבחור ספק
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="form-group" *ngIf="control('receptionDate') as field">
+    <mat-form-field appearance="fill">
+      <mat-label>תאריך קבלה מספק</mat-label>
+      <input matInput [matDatepicker]="picker" [formControl]="field">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <ng-container *ngIf="field.errors as errs">
+        <mat-error>שדה חובה</mat-error>
+      </ng-container>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>פרטי חשבונית - להנה"ח</mat-label>
+      <textarea matInput [formControl]="control('invoiceDescription')" placeholder="פרטי חשבונית" cdkTextareaAutosize
+        cdkAutosizeMinRows="3"></textarea>
+      <mat-error *ngIf="form.get('invoiceDescription').dirty && form.get('invoiceDescription').hasError('required')">
+        חובה למלא פרטי חשבונית
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>הערות</mat-label>
+      <textarea matInput [formControl]="control('invoiceNote')" placeholder="הערות" cdkTextareaAutosize
+        cdkAutosizeMinRows="3"></textarea>
+      <mat-error *ngIf="form.get('invoiceNote').dirty && form.get('invoiceNote').hasError('required')">
+        חובה למלא פרטי חשבונית
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="invoice-preview">
+    <app-invoice-action-part
+      [invoiceActionForm]="getSelectedInvoiceActionFrom((this.selectedInvoiceActionIndex$ | async))"></app-invoice-action-part>
+  </div>
+  <!-- <div>
+        <app-invoice-item-part></app-invoice-item-part>
+        </div>   -->
+  <div> {{form.value | json}}</div>
+
+</form>
+
+{{this.myInvoiceVm$ | json}}
+
+
+הוספת חשבונית דגטאלית

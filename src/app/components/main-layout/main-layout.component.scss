@@ -1,0 +1,34 @@
+
+
+:host {
+    display: grid;
+}
+
+.header {
+    font-size: 36px;
+}
+.header1 {
+    font-size: 36px;
+    color: red;
+}
+
+.seperator {
+    flex: 1;
+}
+
+mat-toolbar {
+    height: 80px;
+}
+
+mat-sidenav-container {
+    mat-sidenav-content{
+        mat-toolbar{
+            .userName{
+                padding-left: 34px;
+                font-size: 20px;
+                padding-bottom: 10px;
+                font-family: 'Roboto', 'Open Sans', 'Helvetica Neue', sans-serif;
+            }
+        }
+    }
+}

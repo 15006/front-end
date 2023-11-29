@@ -1,0 +1,130 @@
+<!-- <table>
+    <colgroup>
+        <col style="width: 44px">
+        <col style="width: 100%">
+        <col style="width: 100px">
+        <col style="width: 100px">
+        <col style="width: 100px">
+    </colgroup>
+    <thead>
+        <tr>
+            <th></th>
+            <th>תאור פריט</th>
+            <th>כמות</th>
+            <th>מחיר יחידה כולל מע"מ</th>
+            <th>סך לפריט</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngIf="localFormArray?.controls">
+            <tr app-order-items-row (deleteRow)="deleteRow(index)"
+                *ngFor="let group of localFormArray.controls; let index = index"
+                [group]="group" [index]="index"
+                >
+            </tr>    
+        </ng-container>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>
+                <div class="icon-cell">
+                    <button mat-icon-button (click)="onAddRow()" title="הוסף פריט">
+                        <mat-icon>add</mat-icon>
+                    </button>    
+                </div>        
+            </td>
+            <td>
+
+            </td>
+            <td>
+                
+            </td>
+            <td>
+                
+            </td>
+            <td>
+                <div>{{ orderService.totalSum | currency:'ILS'}}</div>
+            </td>
+        </tr>
+    </tfoot>
+</table> -->
+
+<table ng-form="myForm" mat-table [dataSource]="orderService.orderTable" class="mat-elevation-z8 w-full tbl-items" required>
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- actions Column -->
+    <ng-container matColumnDef="actions">
+        <th class="w-32" mat-header-cell *matHeaderCellDef> פעולה </th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-raised-button color="warn" (click)="deleteItem(element)">מחק</button>
+        </td>
+        <td class="font-bold" mat-footer-cell *matFooterCellDef>
+            <button mat-raised-button color="primary" (click)="addItem()">הוסף</button>
+
+        </td>
+    </ng-container>
+
+    <!-- Description Column -->
+    <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> תיאור פריט </th>
+        <td mat-cell *matCellDef="let element">
+            <input class="w-full h-full outline-none p-3 bg-slate-300 rounded-sm" type="text"
+                [(ngModel)]="element.orderDetailDescription" (input)="emitItems(true)" required>
+        </td>
+        <td mat-footer-cell *matFooterCellDef>
+            <button mat-raised-button color="primary" (click)="finishOrder()">סיים הזמנה</button>
+
+        </td>
+    </ng-container>
+
+    <!-- Quantity Column -->
+    <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef> כמות </th>
+        <td mat-cell *matCellDef="let element">
+            <input class="w-full h-full outline-none p-3 bg-slate-300 rounded-sm" type="number"
+                [(ngModel)]="element.quantity" (keyup)="emitItems(true)" min="1" required>
+        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <!-- Price Column -->
+    <ng-container matColumnDef="unitPrice">
+        <th mat-header-cell *matHeaderCellDef> מחיר</th>
+        <td mat-cell *matCellDef="let element">
+            <input class="w-full h-full outline-none p-3 bg-slate-300 rounded-sm" type="number"
+                [(ngModel)]="element.unitPrice" (keyup)="emitItems(true)" min="1" required>
+            <!-- <mat-error *ngIf="!(element.unitPrice > 0)">
+                מחיר חייב להיות גדול מ-0
+            </mat-error> -->
+        </td>
+        <td class="font-bold" mat-footer-cell *matFooterCellDef>סכום הזמנה:</td>
+    </ng-container>
+    <ng-container matColumnDef="itemTotalSum">
+        <th mat-header-cell *matHeaderCellDef> סה"כ </th>
+        <td mat-cell *matCellDef="let element">
+            <input class="w-full h-full outline-none p-3 bg-slate-300 rounded-sm" disabled
+                [(ngModel)]="element.quantity*element.unitPrice" (keyup)="emitItems(true)">
+        </td>
+        <td class="font-bold" mat-footer-cell *matFooterCellDef> {{orderService.totalSum|currency:'ILS'}}</td>
+    </ng-container>
+    <!-- <ng-container matColumnDef="totalSum">
+        <td class="font-bold" mat-footer-cell *matFooterCellDef>{{ getTotalCost() | currency }}</td>
+    </ng-container> -->
+
+
+    <!-- <ng-container matColumnDef="totalSum">
+        <th mat-header-cell *matHeaderCellDef>סוף מעשה </th>
+        <td mat-cell *matCellDef="let element">
+             <input class="w-full h-full outline-none p-3 bg-slate-300 rounded-sm" disabled 
+                [(ngModel)]="orderService.totalSum+(element.quantity*element.unitPrice)" min="1">  -->
+                <!-- {{orderService.totalSum+(element.quantity*element.unitPrice)}}
+        </td>
+        <td class="font-bold" mat-footer-cell *matFooterCellDef></td>
+    </ng-container> --> 
+    <tr mat-header-row *matHeaderRowDef="orderService.displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: orderService.displayedColumns;"></tr>
+    <tr mat-footer-row *matFooterRowDef="orderService.displayedColumns; sticky: true"></tr>
+</table>
+
+<!-- <button (click)="alertt()" [innerText]="'click me'"></button> -->

@@ -1,0 +1,161 @@
+body{
+    padding-right: 50px;
+    background-color: red;
+}
+:host{
+   // font-size: smaller;
+    
+}
+
+header{
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.a{
+    text-align: center;
+}
+
+table{
+    width: 100%;
+}
+.right-css{
+    float: right;
+}
+.left-css{
+    margin-left: 10px;
+    float: left;
+}
+
+.center-css{
+    text-align: center;
+}
+.left-signature-css{
+    margin-left: 200px;
+    float: left;
+}
+
+
+
+.cooperative-css{
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.software-desc-css{
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.header-css{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.inovice-type-css{
+    font-size: 16px;
+    text-align: center;
+   
+}
+
+.sum{
+    font-size: 18px;
+}
+.box-inline{
+    border-bottom: 1px solid #080808;
+    width: 120px;
+    height: 20px;
+    /* float: right; */
+}
+
+.width-200-css{
+    width: 200px;
+    
+}
+
+.font-bold-css{
+    font-weight: bold
+}
+
+
+
+.invoice-detail-css{
+  padding:30px 100px 20px 50px;
+  width:50%;
+  float:right;
+}
+
+.invoice-left-detail-css{
+    padding: 30px 50px 20px 50px;
+    width:50%;
+    float: left;
+  }
+
+  .bold-size-biger-css{
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  .span-property{ 
+      width: 150px;display: inline-block;
+ }
+
+ .sum-desc{
+     float: left;
+     padding-left: 5%;
+   
+ }
+
+ fieldset{
+     border-style: none;
+ }
+
+
+
+table { border-collapse:collapse; font-size: 13px; }
+table thead th { border-bottom: 1px solid #000;border-top: 1px solid #000;  text-align: right; padding-right: 6px; }
+table tbody tr { border-top: 0.2px solid rgb(206, 206, 206); border-bottom: 0.2px solid rgb(206, 206, 206);}
+table tfoot tr {  font-weight: bold; }
+
+td:nth-child(1){
+   // width: 20px;
+  padding-right: 6px;
+}
+td:nth-child(2){
+   // width: 80px;
+  padding-right: 6px;
+}
+td:nth-child(3){
+  //  width: 50px;
+  padding-right: 6px;
+}
+td:nth-child(4){
+    // width: 190px;
+    max-width: 200px;
+  padding-right: 8px;
+}
+td:nth-child(5){
+    // width: 370px;
+  padding-right: 6px;
+}
+td:nth-child(6){
+    //width: 250px;
+  padding-right: 6px;
+}
+td:nth-child(7){
+   // width: 450px;
+    max-width: 300;
+   padding-right: 6px;
+}
+td:nth-child(8){
+    //width: 70px;
+  padding-right: 12px;
+}
+
+
+
+

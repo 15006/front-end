@@ -1,0 +1,128 @@
+<!-- <ng-container *ngIf="(invoice$ | async) as invoice"> -->
+    <ng-container *ngIf="(invoice$ | async) as invoice"> 
+        <fieldset *ngIf="(cooperative$ | async) as cooperative">
+      <div class="right-css">
+      בס"ד  
+      </div>
+      <div class="left-css">
+       {{strCurrentDate}}       
+      </div>
+      
+      
+        <div class="header-css">
+          <fieldset *ngIf="(cooperative$ | async) as cooperative">
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{cooperative.cooperativeName}} </div>
+          </fieldset>
+          <div>    טופס אישור ביצוע
+          
+          </div> 
+          <!-- <div class="inovice-type-css" >
+          {{strInvoiceType(invoice.isTaxInvoice)}}
+        </div> -->
+        </div>
+        <div class="left-css" *ngIf='invoice.invoiceDigitalId'>
+          <img src='assets/invoice/invoiceDegital.jpg' width="10%">
+          <fieldset class="bold-css width-150-css" *ngIf='invoice.invoiceDigitalId'>
+              חשבונית דיגיטאלית מצורפת 
+          </fieldset>
+        </div> 
+        <br>
+      <div>
+        <div class="invoice-detail-css">
+         
+          <p class="bold-size-biger-css"><span class="span-property">מס' אישור ביצוע </span><span>{{invoice.invoiceId}}</span></p>
+          <p><span class="span-property">ספק: </span>{{invoice.supplierName}} - <b>{{invoice.supplierId}}</b></p>
+          <p><span class="span-property">מספר חשבונית: </span>{{invoice.invoiceNumber}}</p>
+          <p><span class="span-property">תאריך חשבונית: </span>{{dateFormatedForPrint(invoice.createdDate)}}</p>
+        </div>
+      
+      
+        <div class="invoice-left-detail-css ">
+          <p><span class="span-property">תאריך קבלה מספק: </span>{{dateFormatedForPrint(invoice.receptionDate)}}</p>
+          <p><span class="span-property">פרטי חשבונית: </span><span >{{invoice.invoiceDetails}}</span></p>
+          <p><span class="span-property">הערות: </span>{{invoice.notes}}</p>
+      
+         
+        </div>
+        </div>
+      
+        <table>
+          <thead>
+            <tr>
+              <th>מס'</th>              
+              <th>סט'</th>
+              <th>ת.א. תקציבי*</th>
+              <th>הזמנה</th>
+              <th>סניף</th>
+              <th>סעיף</th>
+              <th>פרוייקט</th>
+              <th>פרטי פעולה</th>
+              <th>סכום כולל</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let action of invoice.invoiceAction;let idx=index" >
+              <td>{{idx+1+"."}}</td>
+              <td>{{action.invoiceActionStatusId}} </td>
+              <td>{{dateFormatedForPrint(action.valueDate)}}</td>
+              <td>{{action.orderId}}</td>
+              <td>{{action.branchName}}</td>
+              <td>{{action.budgetId}}-{{action.budgetName}}</td>
+              <td>{{action.projectName}} </td>
+              <td>{{action.invoiceActionDescription}}</td>
+              <td>{{action.sumInvoiceAction | number :'1.2-2'}}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td><span> סה"כ + מע"מ </span><span>{{invoice.sumInvoice  | currency :"ILS"}}</span></td>
+            </tr>
+            </tfoot>
+            <!-- <tr>
+              
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td><span> חיוב מערכת </span></td>
+              <td>אין נתונים</td>
+            </tr>
+                </tfoot> -->
+        </table>
+        <br><br>
+        <div class="center-css">
+         <div><span >      מאשר:     </span>
+           <div style="display: inline-block" class="box-inline ">{{invoice.createdByEmployeeName}}</div>
+         </div>
+         <div><span >    חתימה:    </span>  
+           <div style="display: inline-block" class="box-inline"></div>
+         </div>
+        </div>
+      
+        <footer>
+          <br>
+          <br>
+       
+       <p>*תאריך אספקה תקציבי</p>
+          <p class="left-css"><span> אישור ביצוע - מונה חשבונית </span>{{invoice.invoiceId}}</p>
+          <!-- <small>עפ"י הנתונים הקיימים כרגע במערכת
+            לספק זה בסניפך, ישנה לפחות חשבונית אחת
+            בסטטוס 79 או 78.</small> -->
+      
+        </footer>
+      </fieldset>
+      </ng-container>
+      
+      
+      
